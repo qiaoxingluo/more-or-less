@@ -1,0 +1,256 @@
+﻿{
+ "ChangeDate": "Wed Oct 28 19:31:52 CST 2026",
+ "Version": "V1.0",
+ "ProjectInitName": "ProjectInit",
+ "ProjectResetName": "ProjectReset",
+ "ProjectReuseName": "ProjectReuse",
+ "SiteList": [
+  {
+   "SiteNumber": 0,
+   "SiteInitName": "site_init",
+   "SiteResetName": "site_reset",
+   "LoopCount": 1,
+   "ErrorSbin": -1,
+   "ErrorHbin": -1,
+   "BinLoopCount": 0,
+   "FuncList": [
+    {
+     "FuncNumber": 0,
+     "FuncName": "OSN_T",
+     "FuncDesc": "",
+     "LoopCount": 1,
+     "Sbin": 2,
+     "Hbin": 2,
+     "Results": "Fail",
+     "ResultAnalysis": [
+      {
+       "ParamName": "OSN__A0",
+       "ParamNumber": 0,
+       "Min": "-1.2",
+       "Max": "-0.2",
+       "Unit": "V"
+      },
+      {
+       "ParamName": "OSN__A1",
+       "ParamNumber": 1,
+       "Min": "-1.2",
+       "Max": "-0.2",
+       "Unit": "V"
+      },
+      {
+       "ParamName": "OSN__A2",
+       "ParamNumber": 2,
+       "Min": "-1.2",
+       "Max": "-0.2",
+       "Unit": "V"
+      },
+      {
+       "ParamName": "OSN__E1",
+       "ParamNumber": 3,
+       "Min": "-1.2",
+       "Max": "-0.2",
+       "Unit": "V"
+      },
+      {
+       "ParamName": "OSN__E2",
+       "ParamNumber": 4,
+       "Min": "-1.2",
+       "Max": "-0.2",
+       "Unit": "V"
+      },
+      {
+       "ParamName": "OSN__E3",
+       "ParamNumber": 5,
+       "Min": "-1.2",
+       "Max": "-0.2",
+       "Unit": "V"
+      },
+      {
+       "ParamName": "OSN__Y0",
+       "ParamNumber": 6,
+       "Min": "-1.2",
+       "Max": "-0.2",
+       "Unit": "V"
+      },
+      {
+       "ParamName": "OSN__Y1",
+       "ParamNumber": 7,
+       "Min": "-1.2",
+       "Max": "-0.2",
+       "Unit": "V"
+      },
+      {
+       "ParamName": "OSN__Y2",
+       "ParamNumber": 8,
+       "Min": "-1.2",
+       "Max": "-0.2",
+       "Unit": "V"
+      },
+      {
+       "ParamName": "OSN__Y3",
+       "ParamNumber": 9,
+       "Min": "-1.2",
+       "Max": "-0.2",
+       "Unit": "V"
+      },
+      {
+       "ParamName": "OSN__Y4",
+       "ParamNumber": 10,
+       "Min": "-1.2",
+       "Max": "-0.2",
+       "Unit": "V"
+      },
+      {
+       "ParamName": "OSN__Y5",
+       "ParamNumber": 11,
+       "Min": "-1.2",
+       "Max": "-0.2",
+       "Unit": "V"
+      },
+      {
+       "ParamName": "OSN__Y6",
+       "ParamNumber": 12,
+       "Min": "-1.2",
+       "Max": "-0.2",
+       "Unit": "V"
+      },
+      {
+       "ParamName": "OSN__Y7",
+       "ParamNumber": 13,
+       "Min": "-1.2",
+       "Max": "-0.2",
+       "Unit": "V"
+      }
+     ]
+    },
+    {
+     "FuncNumber": 1,
+     "FuncName": "OSP_T",
+     "FuncDesc": "",
+     "LoopCount": 1,
+     "Sbin": 3,
+     "Hbin": 3,
+     "Results": "Fail",
+     "ResultAnalysis": [
+      {
+       "ParamName": "OSP__A0",
+       "ParamNumber": 0,
+       "Min": "0.2",
+       "Max": "1.2",
+       "Unit": "V"
+      },
+      {
+       "ParamName": "OSP__A1",
+       "ParamNumber": 1,
+       "Min": "0.2",
+       "Max": "1.2",
+       "Unit": "V"
+      },
+      {
+       "ParamName": "OSP__A2",
+       "ParamNumber": 2,
+       "Min": "0.2",
+       "Max": "1.2",
+       "Unit": "V"
+      },
+      {
+       "ParamName": "OSP__E1",
+       "ParamNumber": 3,
+       "Min": "0.2",
+       "Max": "1.2",
+       "Unit": "V"
+      },
+      {
+       "ParamName": "OSP__E2",
+       "ParamNumber": 4,
+       "Min": "0.2",
+       "Max": "1.2",
+       "Unit": "V"
+      },
+      {
+       "ParamName": "OSP__E3",
+       "ParamNumber": 5,
+       "Min": "0.2",
+       "Max": "1.2",
+       "Unit": "V"
+      },
+      {
+       "ParamName": "OSP__Y0",
+       "ParamNumber": 6,
+       "Min": "0.2",
+       "Max": "1.2",
+       "Unit": "V"
+      },
+      {
+       "ParamName": "OSP__Y1",
+       "ParamNumber": 7,
+       "Min": "0.2",
+       "Max": "1.2",
+       "Unit": "V"
+      },
+      {
+       "ParamName": "OSP__Y2",
+       "ParamNumber": 8,
+       "Min": "0.2",
+       "Max": "1.2",
+       "Unit": "V"
+      },
+      {
+       "ParamName": "OSP__Y3",
+       "ParamNumber": 9,
+       "Min": "0.2",
+       "Max": "1.2",
+       "Unit": "V"
+      },
+      {
+       "ParamName": "OSP__Y4",
+       "ParamNumber": 10,
+       "Min": "0.2",
+       "Max": "1.2",
+       "Unit": "V"
+      },
+      {
+       "ParamName": "OSP__Y5",
+       "ParamNumber": 11,
+       "Min": "0.2",
+       "Max": "1.2",
+       "Unit": "V"
+      },
+      {
+       "ParamName": "OSP__Y6",
+       "ParamNumber": 12,
+       "Min": "0.2",
+       "Max": "1.2",
+       "Unit": "V"
+      },
+      {
+       "ParamName": "OSP__Y7",
+       "ParamNumber": 13,
+       "Min": "0.2",
+       "Max": "1.2",
+       "Unit": "V"
+      }
+     ]
+    },
+    {
+     "FuncNumber": 2,
+     "FuncName": "SetPassBin",
+     "FuncDesc": "",
+     "LoopCount": 1,
+     "Sbin": 1,
+     "Hbin": 1,
+     "Results": "Pass",
+     "ResultAnalysis": [
+      {
+       "ParamName": "Param",
+       "ParamNumber": 0,
+       "Min": "0",
+       "Max": "0",
+       "Unit": ""
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

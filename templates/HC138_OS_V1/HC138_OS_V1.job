@@ -1,0 +1,21 @@
+{
+	"JOB":"2.0",
+	"jobDir":"D:\\MINI-ATE\\workspace\\HC138_OS_V1",
+	"jobFilePath":"D:\\MINI-ATE\\workspace\\HC138_OS_V1\\HC138_OS_V1.job",
+	"Name":"HC138_OS_V1",
+	"Date":"2026-10-28 20:00:00",
+	"ResDef":"HC138_OS_V1.res",
+	"SigMap":"HC138_OS_V1.sig",
+	"Pattern":"HC138_OS_V1.pat",
+	"Timing":"HC138_OS_V1.tim",
+	"TestProg":{
+		"Src":[],
+		"IncDir":[]
+	},
+	"Library":"Test.dll",
+	"Makefile":"Makefile",
+	"TMF":"HC138_OS_V1.tmf",
+	"AteHomePath":"d:\\MINI-ATE",
+	"SigGroup":"HC138_OS_V1.grp",
+	"lotId":"HC138_LXX1"
+}

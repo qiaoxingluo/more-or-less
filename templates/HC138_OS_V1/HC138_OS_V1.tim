@@ -1,0 +1,6 @@
+TimingName,Period,Signal,WFC,Evt0 Event,Evt0 Expr,Evt1 Event,Evt1 Expr,Evt2 Event,Evt2 Expr,Evt3 Event,Evt3 Expr
+WFT1,10us,INPUT_PINS,0,D,0us,,,,,,
+,,,1,U,0us,,,,,,
+,,OUTPUT_PINS,L,L,9us,,,,,,
+,,,H,H,9us,,,,,,
+,,,X,X,9us,,,,,,

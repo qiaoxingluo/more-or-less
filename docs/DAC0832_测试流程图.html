@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DAC0832 数模转换芯片 · 测试流程图</title>
+<style>
+:root{
+  --bg:#FAF9F7; --surface:#FFFFFF; --line:#E5E3DD; --line2:#D3D1C7;
+  --t1:#2C2C2A; --t2:#5F5E5A; --t3:#888780;
+  --blue:#185FA5; --blue-bg:#E6F1FB; --blue-br:#B5D4F4;
+  --teal:#0F6E56; --teal-bg:#E1F5EE; --teal-br:#9FE1CB;
+  --amber:#854F0B; --amber-bg:#FAEEDA; --amber-br:#FAC775;
+  --red:#A32D2D; --red-bg:#FCEBEB; --red-br:#F7C1C1;
+  --gray-bg:#F1EFE8;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; padding:32px 20px 64px;
+  background:var(--bg); color:var(--t1);
+  font-family:system-ui,-apple-system,"Segoe UI","Microsoft YaHei",sans-serif;
+  font-size:14px; line-height:1.6;
+}
+.wrap{max-width:1080px;margin:0 auto}
+header{margin-bottom:24px}
+h1{font-size:22px;font-weight:600;margin:0 0 6px}
+.sub{color:var(--t2);font-size:13px}
+.meta{color:var(--t3);font-size:12px;margin-top:6px}
+
+.panel{
+  background:var(--surface); border:1px solid var(--line); border-radius:12px;
+  padding:20px 22px; margin:20px 0;
+}
+.panel h2{font-size:15px;font-weight:600;margin:0 0 4px}
+.panel .note{font-size:12px;color:var(--t2);margin-bottom:14px}
+.panel.warn{border-color:var(--amber-br);background:#FEFCF5}
+.panel.warn h2{color:var(--amber)}
+
+.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-top:12px}
+.kv div{background:var(--gray-bg);border-radius:8px;padding:10px 12px;font-size:12.5px}
+.kv b{display:block;color:var(--t3);font-weight:400;font-size:11.5px;margin-bottom:2px}
+
+table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:8px}
+th,td{border:1px solid var(--line);padding:6px 9px;text-align:left}
+th{background:var(--gray-bg);font-weight:500;color:var(--t2)}
+td.mono{font-family:"Cascadia Mono",Consolas,monospace;font-size:12px}
+
+.chain{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.ov-node{
+  background:var(--blue-bg); border:1px solid var(--blue-br); border-radius:8px;
+  padding:8px 12px; font-size:13px; color:var(--blue);
+}
+.ov-node.last{background:var(--teal-bg);border-color:var(--teal-br);color:var(--teal)}
+.arrow{color:var(--t3);font-size:16px;user-select:none}
+
+.case{margin-bottom:8px}
+.case-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;margin-bottom:16px}
+.case-h h2{font-size:17px;font-weight:600;margin:0}
+.chip{
+  display:inline-block;font-size:12px;padding:2px 8px;border-radius:6px;
+  background:var(--gray-bg);color:var(--t2);border:1px solid var(--line);
+}
+.chip.res{background:var(--amber-bg);border-color:var(--amber-br);color:var(--amber)}
+.chip.err{background:var(--red-bg);border-color:var(--red-br);color:var(--red)}
+
+.steps{position:relative;padding-left:34px}
+.steps::before{
+  content:"";position:absolute;left:13px;top:14px;bottom:14px;
+  width:2px;background:var(--line2);border-radius:2px;
+}
+.step{position:relative;margin-bottom:14px}
+.step:last-child{margin-bottom:0}
+.num{
+  position:absolute;left:-34px;top:10px;width:28px;height:28px;border-radius:50%;
+  background:var(--blue-bg);border:1px solid var(--blue-br);color:var(--blue);
+  font-size:12px;display:flex;align-items:center;justify-content:center;font-weight:600;
+}
+.step.pass .num{background:var(--teal-bg);border-color:var(--teal-br);color:var(--teal)}
+.step.opt .num{background:var(--amber-bg);border-color:var(--amber-br);color:var(--amber)}
+.card{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:var(--surface)}
+.step.pass .card{border-color:var(--teal-br);background:#F7FCFA}
+.card-h{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:6px}
+code{font-family:"Cascadia Mono",Consolas,monospace;font-size:12.5px;background:var(--gray-bg);padding:2px 7px;border-radius:5px}
+.cn{font-size:13.5px;font-weight:500}
+.bin-tag{
+  margin-left:auto;font-size:12px;padding:2px 8px;border-radius:6px;
+  background:var(--red-bg);border:1px solid var(--red-br);color:var(--red);white-space:nowrap;
+}
+.step.pass .bin-tag{background:var(--teal-bg);border-color:var(--teal-br);color:var(--teal)}
+.card-b{font-size:12.5px;color:var(--t2)}
+.lbl{color:var(--t3);margin-right:4px}
+.plim{
+  display:inline-block;font-size:12px;font-family:Consolas,monospace;
+  background:#FAF9F7;border:1px solid var(--line);border-radius:5px;
+  padding:1px 6px;margin:2px 4px 2px 0;color:var(--t1);
+}
+.rtag{
+  display:inline-block;font-size:11.5px;padding:1px 7px;border-radius:5px;margin:2px 4px 2px 0;
+  background:var(--blue-bg);border:1px solid var(--blue-br);color:var(--blue);
+}
+.warn-item{
+  border:1px solid var(--amber-br);background:var(--amber-bg);border-radius:10px;
+  padding:12px 14px;margin-bottom:10px;
+}
+.warn-item:last-child{margin-bottom:0}
+.warn-item b{font-size:13.5px;color:var(--amber);display:block;margin-bottom:4px}
+.warn-item p{margin:0;font-size:12.5px;color:var(--t2)}
+
+footer{margin-top:36px;font-size:12px;color:var(--t3);line-height:1.8}
+.legend{margin-top:10px}
+.legend b{color:var(--t2);font-weight:500}
+@media print{
+  body{background:#fff;padding:0}
+  .panel,.warn-item{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>DAC0832 数模转换芯片 · 测试流程图</h1>
+  <div class="sub">8 位乘法型 D/A 转换器，DIP-20 · 平台：ST2500 / ST2516 + 通用器件接口板</div>
+  <div class="meta">本案例需自行搭建外围电路（DAC + LM358 做 I/V 转换），性质同 CD4511 案例</div>
+</header>
+
+<div class="panel">
+  <h2>静态参数基准（VREF = 5.000 V）</h2>
+  <div class="note">所有判据都建立在这三个数值上，测 DAC 前必须先算清楚。</div>
+  <div class="kv">
+    <div><b>1 LSB 步进</b>VREF ÷ 256 = 19.53 mV</div>
+    <div><b>满量程 FS</b>VREF × 255 ÷ 256 = 4.980 V</div>
+    <div><b>理想传递函数</b>V(n) = −VREF × n ÷ 256（反相接法）</div>
+  </div>
+</div>
+
+<div class="panel">
+  <h2>为什么选它 · 与已有案例的关系</h2>
+  <div class="note">DAC0832 是 ADC0832 的镜像，两端接起来就是一个完整的数据转换链路。</div>
+  <table>
+    <tr><th>对比项</th><th>ADC0832（已有案例）</th><th>DAC0832（本案例）</th></tr>
+    <tr><td>转换方向</td><td>模拟 → 数字</td><td>数字 → 模拟</td></tr>
+    <tr><td>接口</td><td>串行 CLK/DI/DO/CS</td><td>8 位并行总线</td></tr>
+    <tr><td>输出性质</td><td>数字码</td><td>电流输出 IOUT1 / IOUT2</td></tr>
+    <tr><td>必需外设</td><td>AWG 提供模拟激励</td><td>LM358 做 I/V 转换</td></tr>
+    <tr><td>核心误差参数</td><td>Offset / Gain / DNL / INL / SNR / ENOB</td><td>Offset / Gain / DNL / INL / 单调性 / 建立时间</td></tr>
+  </table>
+</div>
+
+<div class="panel">
+  <h2>资源分配（ST2500）</h2>
+  <div class="note">通道号需按实际机台板卡重新分配；DIO 自带 PPMU。</div>
+  <table>
+    <tr><th>信号</th><th>AFEType</th><th>说明</th></tr>
+    <tr><td class="mono">VCC / VREF / VSS</td><td>DPS × 3</td><td>器件电源 5 V、基准 5.000 V、LM358 负电源 −5 V</td></tr>
+    <tr><td class="mono">DI0~DI7 / CS / WR1 / ILE / XFER / WR2</td><td>DIO × 13</td><td>并行总线与控制脚，写码与跑 Pattern</td></tr>
+    <tr><td class="mono">IOUT1 / IOUT2 / VOUT</td><td>BPMU × 3</td><td>测电流与高精度测电压（静态参数必须用 BPMU）</td></tr>
+    <tr><td class="mono">VOUT_S</td><td>DGT × 1</td><td>建立时间的高速采样输入</td></tr>
+    <tr><td class="mono">K_LOAD / K_OPA</td><td>CBIT × 2</td><td>切换负载 / 旁路运放</td></tr>
+  </table>
+</div>
+
+<div class="panel">
+  <h2>通用调度框架</h2>
+  <div class="note">与其余五个案例相同：无 main()，Runner 按 <code>.tmf</code> 的 FuncList 顺序调用导出函数。</div>
+  <div class="chain">
+    <span class="ov-node">Runner 加载 Job + Test.dll</span><span class="arrow">→</span>
+    <span class="ov-node">ProjectInit</span><span class="arrow">→</span>
+    <span class="ov-node">SiteInit</span><span class="arrow">→</span>
+    <span class="ov-node">FuncList 逐项执行</span><span class="arrow">→</span>
+    <span class="ov-node">CheckResultAndBin 判限</span><span class="arrow">→</span>
+    <span class="ov-node last">SetPassBin → Bin 1</span><span class="arrow">→</span>
+    <span class="ov-node">SiteReset / ProjectReset</span>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="case">
+    <div class="case-h">
+      <h2>测试流程 · 8 步</h2>
+      <span class="chip res">DPS×3 · DIO×13 · BPMU×3 · DGT×1 · CBIT×2</span>
+      <span class="chip err">异常 Sbin/Hbin = 99</span>
+    </div>
+  </div>
+  <div class="steps">
+
+    <div class="step">
+      <div class="num">0</div>
+      <div class="card">
+        <div class="card-h"><code>OS_TEST</code><span class="cn">开短路</span><span class="bin-tag">Fail → Bin 2</span></div>
+        <div class="card-b"><span class="lbl">方法</span>13 个 IO 脚经 PPMU 各抽 −100 µA / 灌 +100 µA，测 ESD 二极管压降</div>
+        <div class="card-b"><span class="lbl">限值</span><span class="plim">负向 −1.2 ~ −0.2 V</span><span class="plim">正向 0.2 ~ 1.2 V</span></div>
+        <div class="card-b"><span class="lbl">资源</span><span class="rtag">PPMU FIMV ±100 µA，钳位 ±2 V</span></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">1</div>
+      <div class="card">
+        <div class="card-h"><code>ICC_TEST</code><span class="cn">静态电源电流</span><span class="bin-tag">Fail → Bin 3</span></div>
+        <div class="card-b"><span class="lbl">方法</span>VCC = 5 V（可加严苛档 15 V），输入脚固定，IOUT1 空载</div>
+        <div class="card-b"><span class="lbl">限值</span><span class="plim">先放宽 0.1 ~ 3 mA，再按 μ±6σ 收紧</span></div>
+        <div class="card-b"><span class="lbl">资源</span><span class="rtag">DPS FVMI</span></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">2</div>
+      <div class="card">
+        <div class="card-h"><code>IOUT_LEAK_TEST</code><span class="cn">输出漏电流</span><span class="bin-tag">Fail → Bin 4</span></div>
+        <div class="card-b"><span class="lbl">方法</span>写全 0 码，CBIT 旁路 LM358 直测电流输出</div>
+        <div class="card-b"><span class="lbl">限值</span><span class="plim">±1 µA 起</span></div>
+        <div class="card-b"><span class="lbl">资源</span><span class="rtag">PPMU FVMI，先大量程后切 2 µA 档</span><span class="rtag">CBIT K_LOAD</span></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">3</div>
+      <div class="card">
+        <div class="card-h"><code>DAC_STATIC_TEST</code><span class="cn">静态五参数（核心）</span><span class="bin-tag">Fail → Bin 5</span></div>
+        <div class="card-b"><span class="lbl">方法</span>码 n = 0 → 255 逐点扫描，每点 BPMU 测 VOUT(n)，端点法算 5 个判据</div>
+        <div class="card-b"><span class="lbl">限值</span>
+          <span class="plim">Offset ±1 LSB</span><span class="plim">Gain ±1 % FS</span>
+          <span class="plim">DNL ±1 LSB</span><span class="plim">INL ±1 LSB</span><span class="plim">单调性 ΔV 全同号</span>
+        </div>
+        <div class="card-b"><span class="lbl">资源</span><span class="rtag">DIO 写码</span><span class="rtag">BPMU 高精度测压</span><span class="rtag">每点等待 ≥100 µs</span></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">4</div>
+      <div class="card">
+        <div class="card-h"><code>SETTLING_TEST</code><span class="cn">建立时间</span><span class="bin-tag">Fail → Bin 6</span></div>
+        <div class="card-b"><span class="lbl">方法</span>主进位跳变 0x7F→0x80 与全幅 0x00→0xFF，DGT 采样判进入 ±½ LSB 带</div>
+        <div class="card-b"><span class="lbl">限值</span><span class="plim">≤ 2 µs（手册典型 1 µs，留 2 倍余量）</span></div>
+        <div class="card-b"><span class="lbl">资源</span><span class="rtag">DGT 高速采样</span><span class="rtag">DIO 产生码跳变</span></div>
+      </div>
+    </div>
+
+    <div class="step opt">
+      <div class="num">5</div>
+      <div class="card">
+        <div class="card-h"><code>VREF_MULT_TEST</code><span class="cn">基准乘法特性（可选加分）</span><span class="bin-tag">Fail → Bin 7</span></div>
+        <div class="card-b"><span class="lbl">方法</span>VREF 取 2.5 / 5 / 10 V，固定码 0x80，验证输出呈 1:2:4 比例</div>
+        <div class="card-b"><span class="lbl">资源</span><span class="rtag">AWG 施加 VREF</span><span class="rtag">BPMU 测输出</span></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">6</div>
+      <div class="card">
+        <div class="card-h"><code>FUNC_TEST</code><span class="cn">时序功能（双缓冲）</span><span class="bin-tag">Fail → Bin 8</span></div>
+        <div class="card-b"><span class="lbl">方法</span>Pattern 覆盖 ILE/CS/WR1 写第一级、XFER/WR2 转移第二级，验证写入不立即改变输出</div>
+        <div class="card-b"><span class="lbl">资源</span><span class="rtag">DIO Pattern</span><span class="rtag">.tim 需满足 WR 最小脉宽</span></div>
+      </div>
+    </div>
+
+    <div class="step pass">
+      <div class="num">7</div>
+      <div class="card">
+        <div class="card-h"><code>SetPassBin</code><span class="cn">置合格档</span><span class="bin-tag">Bin 1 = Pass</span></div>
+        <div class="card-b">全部通过后调用 <code>binObj.SetBin(1)</code>。</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="panel warn">
+  <h2>三个工程陷阱（最容易被问倒的地方）</h2>
+  <div class="warn-item">
+    <b>1 · LM358 的失调会直接污染 Offset 判据</b>
+    <p>本方案用 LM358 做 I/V 转换，它自身有数 mV 级失调，会被算进 DAC 的 Offset。两个办法：Offset 判据放宽到 ±1.5 LSB 并在报告中声明这是「系统级」指标；或改用 OP07 等低失调运放把误差隔离。报告必须写清楚「测的是 DAC 还是运放」。</p>
+  </div>
+  <div class="warn-item">
+    <b>2 · 建立时间测的是「DAC + LM358」而非芯片本身</b>
+    <p>LM358 带宽约 1 MHz、压摆率约 0.3 V/µs，5 V 满幅跳变光运放就要十几 µs，远慢于 DAC 自身的 1 µs。三个对策：限值放宽并声明为系统级（教学推荐）；CBIT 旁路运放、IOUT1 串取样电阻直测（方案 B）；I/V 转换换高速运放（方案 C）。</p>
+  </div>
+  <div class="warn-item">
+    <b>3 · DAC 的 DNL / INL 公式与 ADC 不同</b>
+    <p>DAC 的 DNL 算的是「相邻码对应的电压步进」，ADC 的 DNL 算的是「相邻码对应的输入电压码宽」。直接复用 ADC0832 案例里的算法会得到错误结果。</p>
+  </div>
+</div>
+
+<div class="panel">
+  <h2>限制：不要直接抄 datasheet 当 Limit</h2>
+  <div class="note">datasheet 的值是厂家自家 bench 条件下的，你在面包板上搭的电路会把寄生、接触电阻、LM358 误差全部叠加进来。</div>
+  <table>
+    <tr><th>步骤</th><th>做法</th></tr>
+    <tr><td>1</td><td>限值先设极宽（如 ICC 0.1~3 mA、DNL ±2 LSB），目的只是筛掉功能坏件</td></tr>
+    <tr><td>2</td><td>拿 30~50 颗良品跑到全 Pass，导出每项分布</td></tr>
+    <tr><td>3</td><td>计算 μ 与 σ，收紧到 μ ± 6σ</td></tr>
+    <tr><td>4</td><td>预留 GR&amp;R 余量（机台重复性 ≤ 公差带 10%），再向外扩</td></tr>
+    <tr><td>5</td><td>反向验证：良品全 Pass、人为坏件全 Fail</td></tr>
+    <tr><td>6</td><td>固化进 <code>.tmf</code>，之后换批次只做交叉验证</td></tr>
+  </table>
+</div>
+
+<footer>
+  <div class="legend"><b>资源缩写：</b>DPS = 器件电源 · PPMU = 每脚精密测量单元（挂 DIO）· BPMU = 板载高精度测量单元 · AWG = 任意波形发生器 · DGT = 数字化采集 · DIO = 数字通道 · CBIT = 继电器控制位</div>
+  <div class="legend"><b>说明：</b>本图为方案推导稿，所有限值均为建议初始值，需经实测样本分布修正后方可作为正式 Limit。芯片的 Supply Current（VCC=5 V 条件下）与 Linearity error 的确切规格，请以你手上批次的官方 datasheet 为准。</div>
+</footer>
+
+</div>
+</body>
+</html>

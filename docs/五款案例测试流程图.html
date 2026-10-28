@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>半导体工程师实训平台 · 五款案例测试流程图</title>
+<style>
+:root{
+  --bg:#FAF9F7; --surface:#FFFFFF; --line:#E5E3DD; --line2:#D3D1C7;
+  --t1:#2C2C2A; --t2:#5F5E5A; --t3:#888780;
+  --blue:#185FA5; --blue-bg:#E6F1FB; --blue-br:#B5D4F4;
+  --teal:#0F6E56; --teal-bg:#E1F5EE; --teal-br:#9FE1CB;
+  --amber:#854F0B; --amber-bg:#FAEEDA; --amber-br:#FAC775;
+  --red:#A32D2D; --red-bg:#FCEBEB; --red-br:#F7C1C1;
+  --gray-bg:#F1EFE8;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; padding:32px 20px 64px;
+  background:var(--bg); color:var(--t1);
+  font-family:system-ui,-apple-system,"Segoe UI","Microsoft YaHei",sans-serif;
+  font-size:14px; line-height:1.6;
+}
+.wrap{max-width:1080px;margin:0 auto}
+header{margin-bottom:28px}
+h1{font-size:22px;font-weight:600;margin:0 0 6px}
+.sub{color:var(--t2);font-size:13px}
+.meta{color:var(--t3);font-size:12px;margin-top:6px}
+
+/* 通用调度框架 */
+.overview{
+  background:var(--surface); border:1px solid var(--line); border-radius:12px;
+  padding:20px 22px; margin:20px 0 32px;
+}
+.overview h2{font-size:15px;font-weight:600;margin:0 0 4px}
+.ov-note{font-size:12px;color:var(--t2);margin-bottom:16px}
+.chain{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.ov-node{
+  background:var(--blue-bg); border:1px solid var(--blue-br); border-radius:8px;
+  padding:8px 12px; font-size:13px; color:var(--blue);
+}
+.ov-node.last{background:var(--teal-bg);border-color:var(--teal-br);color:var(--teal)}
+.arrow{color:var(--t3);font-size:16px;user-select:none}
+
+/* 案例导航 */
+.nav{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px}
+.nav a{
+  text-decoration:none;font-size:13px;padding:6px 12px;border-radius:8px;
+  background:var(--surface);border:1px solid var(--line);color:var(--t2);
+}
+.nav a:hover{border-color:var(--blue);color:var(--blue)}
+
+/* 案例区块 */
+.case{
+  background:var(--surface); border:1px solid var(--line); border-radius:12px;
+  padding:22px; margin-bottom:24px;
+}
+.case-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;margin-bottom:6px}
+.case-h h2{font-size:17px;font-weight:600;margin:0}
+.chip{
+  display:inline-block;font-size:12px;padding:2px 8px;border-radius:6px;
+  background:var(--gray-bg);color:var(--t2);border:1px solid var(--line);
+}
+.chip.res{background:var(--amber-bg);border-color:var(--amber-br);color:var(--amber)}
+.chip.err{background:var(--red-bg);border-color:var(--red-br);color:var(--red)}
+.case-desc{font-size:13px;color:var(--t2);margin-bottom:18px}
+
+/* 步骤 */
+.steps{position:relative;padding-left:34px}
+.steps::before{
+  content:"";position:absolute;left:13px;top:14px;bottom:14px;
+  width:2px;background:var(--line2);border-radius:2px;
+}
+.step{position:relative;margin-bottom:14px}
+.step:last-child{margin-bottom:0}
+.num{
+  position:absolute;left:-34px;top:10px;width:28px;height:28px;border-radius:50%;
+  background:var(--blue-bg);border:1px solid var(--blue-br);color:var(--blue);
+  font-size:12px;display:flex;align-items:center;justify-content:center;font-weight:600;
+}
+.step.pass .num{background:var(--teal-bg);border-color:var(--teal-br);color:var(--teal)}
+.card{
+  border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:var(--surface);
+}
+.step.pass .card{border-color:var(--teal-br);background:#F7FCFA}
+.card-h{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:6px}
+code{
+  font-family:"Cascadia Mono",Consolas,"Courier New",monospace;
+  font-size:12.5px;background:var(--gray-bg);padding:2px 7px;border-radius:5px;color:var(--t1);
+}
+.cn{font-size:13.5px;font-weight:500}
+.bin-tag{
+  margin-left:auto;font-size:12px;padding:2px 8px;border-radius:6px;
+  background:var(--red-bg);border:1px solid var(--red-br);color:var(--red);white-space:nowrap;
+}
+.step.pass .bin-tag{background:var(--teal-bg);border-color:var(--teal-br);color:var(--teal)}
+.card-b{font-size:12.5px;color:var(--t2)}
+.lbl{color:var(--t3);margin-right:4px}
+.plim{
+  display:inline-block;font-size:12px;font-family:Consolas,monospace;
+  background:#FAF9F7;border:1px solid var(--line);border-radius:5px;
+  padding:1px 6px;margin:2px 4px 2px 0;color:var(--t1);
+}
+.rtag{
+  display:inline-block;font-size:11.5px;padding:1px 7px;border-radius:5px;margin:2px 4px 2px 0;
+  background:var(--blue-bg);border:1px solid var(--blue-br);color:var(--blue);
+}
+
+footer{margin-top:36px;font-size:12px;color:var(--t3);line-height:1.8}
+.legend{margin-top:12px}
+.legend b{color:var(--t2);font-weight:500}
+
+@media print{
+  body{background:#fff;padding:0}
+  .case,.overview{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>半导体工程师实训平台 · 五款案例测试流程图</h1>
+  <div class="sub">基于加速科技 ST2500 / ST2516 工程文件（<code>.tmf</code> 测试流 + <code>.sig</code> 资源映射）自动提取</div>
+  <div class="meta">案例：ADC0832 · HK24C02 · HK32F031F4P6 · LM358 · TPS73625</div>
+</header>
+
+<div class="overview">
+  <h2>通用调度框架（五个案例共用）</h2>
+  <div class="ov-note">工程没有 main()，由 Runner 加载 Test.dll 后按 <code>.tmf</code> 中的 FuncList 顺序按名调用导出函数。任一步 Fail → 按该步 Sbin/Hbin 分档并终止；全部通过 → SetPassBin 置 Bin 1。</div>
+  <div class="chain">
+    <span class="ov-node">Runner 加载 Job + Test.dll</span><span class="arrow">→</span>
+    <span class="ov-node">ProjectInit</span><span class="arrow">→</span>
+    <span class="ov-node">SiteInit</span><span class="arrow">→</span>
+    <span class="ov-node">① FuncList 逐项执行</span><span class="arrow">→</span>
+    <span class="ov-node">② 每项 CheckResultAndBin 判限</span><span class="arrow">→</span>
+    <span class="ov-node last">SetPassBin → Bin 1</span><span class="arrow">→</span>
+    <span class="ov-node">SiteReset / ProjectReset</span>
+  </div>
+</div>
+
+<div class="nav">
+  <a href="#adc">ADC0832 数模混合</a>
+  <a href="#eeprom">HK24C02 存储</a>
+  <a href="#mcu">HK32F031F4P6 MCU</a>
+  <a href="#opa">LM358 运放</a>
+  <a href="#ldo">TPS73625 电源</a>
+</div>
+
+<!-- ============ ADC0832 ============ -->
+<section class="case" id="adc">
+  <div class="case-h">
+    <h2>1 · ADC0832 — 数模混合芯片（8-bit ADC）</h2>
+    <span class="chip">FT 成品测试</span>
+    <span class="chip res">DIO×7 · DPS×1 · AWG×1 · CBIT×3</span>
+    <span class="chip err">异常 Sbin/Hbin = 999</span>
+  </div>
+  <div class="case-desc">串行 ADC：先用 PPMU 做开短路，再用 AWG 产生模拟激励、DIO 读数字码，分别求静态（INL/DNL）与动态（SNR/ENOB）参数。</div>
+  <div class="steps">
+
+    <div class="step">
+      <div class="num">0</div>
+      <div class="card">
+        <div class="card-h"><code>OS_TEST</code><span class="cn">开短路测试</span><span class="bin-tag">Fail → Bin 2</span></div>
+        <div class="card-b"><span class="lbl">限值</span>
+          <span class="plim">OSN CS/CH0/CH1/DI/DO/CLK：−1.1 ~ −0.2 V</span>
+          <span class="plim">OSN VCC_DIO：−1.1 ~ −0.1 V</span>
+          <span class="plim">OSP 6 脚：0.2 ~ 1.2 V</span>
+        </div>
+        <div class="card-b"><span class="lbl">资源</span><span class="rtag">PPMU FIMV ±100 µA</span><span class="rtag">CBIT 切换 K0/K1/K2</span></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">1</div>
+      <div class="card">
+        <div class="card-h"><code>ADC_Static_AWG</code><span class="cn">静态参数（AWG 斜坡激励）</span><span class="bin-tag">Fail → Bin 3</span></div>
+        <div class="card-b"><span class="lbl">限值</span>
+          <span class="plim">Offset：−1 ~ 1 LSB</span><span class="plim">Gain_Error：−1 ~ 1 LSB</span>
+          <span class="plim">DNL：−1 ~ 1 LSB</span><span class="plim">INL：−1 ~ 1 LSB</span>
+          <span class="plim">Miss_Code：0</span><span class="plim">ADC_OUT_Lin：0 ~ 255</span>
+        </div>
+        <div class="card-b"><span class="lbl">资源</span><span class="rtag">AWG 产生斜坡</span><span class="rtag">DIO 读码 + Pattern</span><span class="rtag">DPS 供电 VCC</span></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">2</div>
+      <div class="card">
+        <div class="card-h"><code>ADC_Dynamic_DSIO</code><span class="cn">动态参数（正弦激励 + FFT）</span><span class="bin-tag">Fail → Bin 5</span></div>
+        <div class="card-b"><span class="lbl">限值</span>
+          <span class="plim">SNR：40 ~ 50 dB</span><span class="plim">SINAD：40 ~ 50 dB</span>
+          <span class="plim">THD：−60 ~ −40 dB</span><span class="plim">ENOB：7 ~ 8</span>
+        </div>
+        <div class="card-b"><span class="lbl">资源</span><span class="rtag">AWG 正弦波</span><span class="rtag">DIO 高速采集（DSIO）</span></div>
+      </div>
+    </div>
+
+    <div class="step pass">
+      <div class="num">3</div>
+      <div class="card">
+        <div class="card-h"><code>SetPassBin</code><span class="cn">置合格档</span><span class="bin-tag">Bin 1 = Pass</span></div>
+        <div class="card-b">前面全部测试项通过后调用 <code>binObj.SetBin(1)</code>。</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ HK24C02 ============ -->
+<section class="case" id="eeprom">
+  <div class="case-h">
+    <h2>2 · HK24C02 — 存储芯片（2 Kbit I²C EEPROM）</h2>
+    <span class="chip">CP1 晶圆探针</span>
+    <span class="chip res">DIO×3 · CBIT×1</span>
+    <span class="chip err">异常 Sbin = 100 / Hbin = 21</span>
+  </div>
+  <div class="case-desc">单站点 Site0。VCC 由 DIO 自带的 PPMU 供电（非 DPS，因电流很小）；I²C 总线通过 CBIT 控制上拉电阻。</div>
+  <div class="steps">
+
+    <div class="step">
+      <div class="num">0</div>
+      <div class="card">
+        <div class="card-h"><code>OS</code><span class="cn">开短路（含 VCC）</span><span class="bin-tag">Fail → Bin 18</span></div>
+        <div class="card-b"><span class="lbl">限值</span>
+          <span class="plim">os_icc：−1.5 ~ −0.2 V</span><span class="plim">OS_SCL：−1.5 ~ −0.2 V</span><span class="plim">OS_SDA：−1.5 ~ −0.2 V</span>
+        </div>
+        <div class="card-b"><span class="lbl">资源</span><span class="rtag">PPMU FIMV 负向抽流</span></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">1</div>
+      <div class="card">
+        <div class="card-h"><code>leakage</code><span class="cn">总线管脚漏电流</span><span class="bin-tag">Fail → Bin 19</span></div>
+        <div class="card-b"><span class="lbl">限值</span>
+          <span class="plim">leak_sda_H / leak_scl_H：±1.5 µA（VCC=5.5 V，管脚加高）</span>
+          <span class="plim">leak_sda_L / leak_scl_L：±1.5 µA（管脚加低）</span>
+        </div>
+        <div class="card-b"><span class="lbl">资源</span><span class="rtag">PPMU FVMI，切 2 µA 小量程</span></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">2</div>
+      <div class="card">
+        <div class="card-h"><code>standby</code><span class="cn">待机电流</span><span class="bin-tag">Fail → Bin 20</span></div>
+        <div class="card-b"><span class="lbl">限值</span><span class="plim">Isb：−1 ~ 1 µA（100 次平均）</span></div>
+        <div class="card-b"><span class="lbl">资源</span><span class="rtag">SCL/SDA 拉高为空闲态 → PPMU 测 VCC 电流</span></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">3</div>
+      <div class="card">
+        <div class="card-h"><code>WRITE_55AA_HV</code><span class="cn">高压写棋盘格</span><span class="bin-tag">Fail → Bin 9</span></div>
+        <div class="card-b"><span class="lbl">限值</span><span class="plim">TM_ALLEVEN_55_2K = 1</span><span class="plim">TM_ALLODD_AA_2K = 1</span></div>
+        <div class="card-b"><span class="lbl">资源</span><span class="rtag">VCC = 5.5 V 高压条件</span><span class="rtag">CBIT 打开 I²C 上拉</span><span class="rtag">DIO Pattern</span></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">4</div>
+      <div class="card">
+        <div class="card-h"><code>READ_55AA_HV</code><span class="cn">读回校验</span><span class="bin-tag">Fail → Bin 10</span></div>
+        <div class="card-b"><span class="lbl">限值</span><span class="plim">READ_55AA_HV = 1</span></div>
+        <div class="card-b"><span class="lbl">资源</span><span class="rtag">Pattern 比较（Voh=3.7 V / Vol=1.2 V，判据比写入宽松）</span></div>
+      </div>
+    </div>
+
+    <div class="step pass">
+      <div class="num">5</div>
+      <div class="card">
+        <div class="card-h"><code>SetPassBin</code><span class="cn">置合格档</span><span class="bin-tag">Bin 1 = Pass</span></div>
+        <div class="card-b">校验通过后下电、断开上拉。</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ HK32F031F4P6 ============ -->
+<section class="case" id="mcu">
+  <div class="case-h">
+    <h2>3 · HK32F031F4P6 — MCU 芯片（Cortex-M0）</h2>
+    <span class="chip">FT 成品测试 · 14 步</span>
+    <span class="chip res">DPS×2 · DIO×17 · TMU×2</span>
+    <span class="chip err">异常 Sbin = 99 / Hbin = 2</span>
+  </div>
+  <div class="case-desc">最复杂的一个案例：直流参数（OS/VOH/VOL/上下拉）+ 需烧录固件跑 functional pattern 的模块测试（BIST/PVD/时钟源）。频率类参数（HSI/PLL/LSI）必须由 TMU 测，普通 DIO 做不到。</div>
+  <div class="steps">
+
+    <div class="step">
+      <div class="num">0</div>
+      <div class="card">
+        <div class="card-h"><code>OSN_TEST</code><span class="cn">开短路 · 负向</span><span class="bin-tag">Sbin 2 / Hbin 4</span></div>
+        <div class="card-b"><span class="lbl">限值</span><span class="plim">17 个 IO：−1.2 ~ −0.2 V</span></div>
+        <div class="card-b"><span class="lbl">资源</span><span class="rtag">PPMU 抽 −100 µA</span></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">1</div>
+      <div class="card">
+        <div class="card-h"><code>OSP_TEST</code><span class="cn">开短路 · 正向</span><span class="bin-tag">Sbin 2 / Hbin 4</span></div>
+        <div class="card-b"><span class="lbl">限值</span><span class="plim">PA0~PA14 / PB1 / BOOT0：0.2 ~ 1.2 V</span></div>
+        <div class="card-b"><span class="lbl">资源</span><span class="rtag">PPMU 灌 +100 µA</span></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">2</div>
+      <div class="card">
+        <div class="card-h"><code>VOH_TEST</code><span class="cn">输出高电平</span><span class="bin-tag">Sbin 2 / Hbin 4</span></div>
+        <div class="card-b"><span class="lbl">限值</span><span class="plim">VOH = 1（Pattern 通过）</span></div>
+        <div class="card-b"><span class="lbl">资源</span><span class="rtag">voh_pat.csv</span><span class="rtag">DIO + PPMU 拉电流</span></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">3</div>
+      <div class="card">
+        <div class="card-h"><code>VOL_TEST</code><span class="cn">输出低电平</span><span class="bin-tag">Sbin 3 / Hbin 4</span></div>
+        <div class="card-b"><span class="lbl">限值</span><span class="plim">VOL = 1（Pattern 通过）</span></div>
+        <div class="card-b"><span class="lbl">资源</span><span class="rtag">vol_pat.csv</span><span class="rtag">DIO + PPMU 灌电流</span></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">4</div>
+      <div class="card">
+        <div class="card-h"><code>VOPD_TEST</code><span class="cn">下拉电流（Pull-Down）</span><span class="bin-tag">Sbin 4 / Hbin 4</span></div>
+        <div class="card-b"><span class="lbl">限值</span><span class="plim">各 IO：66 ~ 110 µA</span></div>
+        <div class="card-b"><span class="lbl">资源</span><span class="rtag">vopd_pat.csv</span><span class="rtag">PPMU FVMI</span></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">5</div>
+      <div class="card">
+        <div class="card-h"><code>VOPU_TEST</code><span class="cn">上拉电流（Pull-Up）</span><span class="bin-tag">Sbin 5 / Hbin 4</span></div>
+        <div class="card-b"><span class="lbl">限值</span><span class="plim">各 IO：−110 ~ −66 µA</span></div>
+        <div class="card-b"><span class="lbl">资源</span><span class="rtag">vopu_pat.csv</span><span class="rtag">PPMU FVMI</span></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">6</div>
+      <div class="card">
+        <div class="card-h"><code>NFL_TEST</code><span class="cn">噪声滤波电平（PA4）</span><span class="bin-tag">Sbin 6 / Hbin 4</span></div>
+        <div class="card-b"><span class="lbl">限值</span><span class="plim">NFL_PA4_HIGH：±0.99 V</span><span class="plim">NFL_PA4_LOW：±0.99 V</span></div>
+        <div class="card-b"><span class="lbl">资源</span><span class="rtag">nfl_pat.csv</span></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">7</div>
+      <div class="card">
+        <div class="card-h"><code>HSE_TEST</code><span class="cn">外部高速时钟电流</span><span class="bin-tag">Sbin 7 / Hbin 4</span></div>
+        <div class="card-b"><span class="lbl">限值</span><span class="plim">HSE：−2 ~ 2 µA</span></div>
+        <div class="card-b"><span class="lbl">资源</span><span class="rtag">hse_pat.csv</span><span class="rtag">DPS 测电流</span></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">8</div>
+      <div class="card">
+        <div class="card-h"><code>PVD_TEST</code><span class="cn">电源电压检测门限</span><span class="bin-tag">Sbin 8 / Hbin 5</span></div>
+        <div class="card-b"><span class="lbl">限值</span>
+          <span class="plim">PH_PVD_L：−0.5 ~ 0.8 V</span><span class="plim">PL_PVD_H：2.2 ~ 2.8 V</span><span class="plim">PH_PVD_L1：−0.5 ~ 0.8 V</span>
+        </div>
+        <div class="card-b"><span class="lbl">资源</span><span class="rtag">pvd_pat.csv</span><span class="rtag">DPS 扫描 VDD + Pattern 读状态</span></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">9</div>
+      <div class="card">
+        <div class="card-h"><code>BIST_TEST</code><span class="cn">内建自测试</span><span class="bin-tag">Sbin 9 / Hbin 5</span></div>
+        <div class="card-b"><span class="lbl">限值</span><span class="plim">BIST = 1</span></div>
+        <div class="card-b"><span class="lbl">资源</span><span class="rtag">BIST_PAT.CSV</span><span class="rtag">烧录固件后跑 FLASH/RAM 自检</span></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">10</div>
+      <div class="card">
+        <div class="card-h"><code>HSI_TEST</code><span class="cn">内部高速时钟频率</span><span class="bin-tag">Sbin 11 / Hbin 5</span></div>
+        <div class="card-b"><span class="lbl">限值</span><span class="plim">HSI1：7.84 ~ 8.16 MHz（即 8 MHz ±2%）</span></div>
+        <div class="card-b"><span class="lbl">资源</span><span class="rtag">TMU 测频率</span><span class="rtag">hsi_pat.csv</span></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">11</div>
+      <div class="card">
+        <div class="card-h"><code>PLL_TEST</code><span class="cn">锁相环倍频输出</span><span class="bin-tag">Sbin 12 / Hbin 5</span></div>
+        <div class="card-b"><span class="lbl">限值</span><span class="plim">PLL：19.6 ~ 20.4 MHz（即 20 MHz ±2%）</span></div>
+        <div class="card-b"><span class="lbl">资源</span><span class="rtag">TMU 测频率</span><span class="rtag">pll_pat.csv</span></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">12</div>
+      <div class="card">
+        <div class="card-h"><code>LSI_TEST</code><span class="cn">内部低速时钟频率</span><span class="bin-tag">Sbin 13 / Hbin 5</span></div>
+        <div class="card-b"><span class="lbl">限值</span><span class="plim">LSI：20 ~ 40 kHz</span></div>
+        <div class="card-b"><span class="lbl">资源</span><span class="rtag">TMU 测频率</span><span class="rtag">lsi_pat.csv</span></div>
+      </div>
+    </div>
+
+    <div class="step pass">
+      <div class="num">13</div>
+      <div class="card">
+        <div class="card-h"><code>SetPassBin</code><span class="cn">置合格档</span><span class="bin-tag">Bin 1 = Pass</span></div>
+        <div class="card-b">全部 13 项通过后置 Pass。</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ LM358 ============ -->
+<section class="case" id="opa">
+  <div class="case-h">
+    <h2>4 · LM358 — 集成运算放大器</h2>
+    <span class="chip">FT 成品测试</span>
+    <span class="chip res">DPS×4 · BPMU×2 · AWG×1 · DGT×1 · CBIT×6</span>
+    <span class="chip err">异常 Sbin/Hbin = 0</span>
+  </div>
+  <div class="case-desc">纯模拟案例：用 CBIT 继电器切换外围电阻网络构成不同闭环拓扑，配合 AWG 施加信号、DGT 数字化、BPMU 高精度测量。DPS 数量最多（4 路）是为了双电源 ±V。</div>
+  <div class="steps">
+
+    <div class="step">
+      <div class="num">0</div>
+      <div class="card">
+        <div class="card-h"><code>Ios_Uos_TEST</code><span class="cn">输入失调电压 / 失调电流</span><span class="bin-tag">Fail → Bin 2</span></div>
+        <div class="card-b"><span class="lbl">限值</span><span class="plim">Uos：−1 ~ 1 V</span><span class="plim">Ios：−100 ~ 100 nA</span></div>
+        <div class="card-b"><span class="lbl">资源</span><span class="rtag">BPMU 高精度 FVMV / FVMI</span><span class="rtag">CBIT 切换辅助环路</span></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">1</div>
+      <div class="card">
+        <div class="card-h"><code>CMRR</code><span class="cn">共模抑制比</span><span class="bin-tag">Fail → Bin 3</span></div>
+        <div class="card-b"><span class="lbl">限值</span><span class="plim">CMRR：65 ~ 130 dB</span></div>
+        <div class="card-b"><span class="lbl">资源</span><span class="rtag">BPMU 施加共模电压并测输出变化</span></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">2</div>
+      <div class="card">
+        <div class="card-h"><code>Aus</code><span class="cn">开环电压增益</span><span class="bin-tag">Fail → Bin 4</span></div>
+        <div class="card-b"><span class="lbl">限值</span><span class="plim">Aus：80 ~ 130 dB</span></div>
+        <div class="card-b"><span class="lbl">资源</span><span class="rtag">BPMU + 闭环辅助放大器法</span></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">3</div>
+      <div class="card">
+        <div class="card-h"><code>PSRR</code><span class="cn">电源抑制比</span><span class="bin-tag">Fail → Bin 5</span></div>
+        <div class="card-b"><span class="lbl">限值</span><span class="plim">PSRR：65 ~ 130 dB</span></div>
+        <div class="card-b"><span class="lbl">资源</span><span class="rtag">DPS 改变电源电压 + BPMU 测输出偏移</span></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">4</div>
+      <div class="card">
+        <div class="card-h"><code>icc</code><span class="cn">静态电源电流（双路）</span><span class="bin-tag">Fail → Bin 6</span></div>
+        <div class="card-b"><span class="lbl">限值</span><span class="plim">ic（负电源）：−1 ~ −0.2 mA</span><span class="plim">ic1（正电源）：0.2 ~ 1 mA</span></div>
+        <div class="card-b"><span class="lbl">资源</span><span class="rtag">DPS FVMI 双电源</span></div>
+      </div>
+    </div>
+
+    <div class="step pass">
+      <div class="num">5</div>
+      <div class="card">
+        <div class="card-h"><code>SetPassBin</code><span class="cn">置合格档</span><span class="bin-tag">Bin 1 = Pass</span></div>
+        <div class="card-b">全部通过后置 Pass。</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ TPS73625 ============ -->
+<section class="case" id="ldo">
+  <div class="case-h">
+    <h2>5 · TPS73625 — 电源管理芯片（LDO 2.5 V）</h2>
+    <span class="chip">FT 成品测试 · 9 步</span>
+    <span class="chip res">DPS×2 · BPMU×2 · AWG×1 · DGT×1 · DIO×2 · CBIT×7</span>
+    <span class="chip err">异常 Sbin/Hbin = 10</span>
+  </div>
+  <div class="case-desc">资源最杂的案例：CBIT 多达 7 路，用于切换不同负载电阻（250 Ω / 6.25 Ω）与地回路；负载调整率需对两种负载各测一次。GND 脚必须单独分配测量单元。</div>
+  <div class="steps">
+
+    <div class="step">
+      <div class="num">0</div>
+      <div class="card">
+        <div class="card-h"><code>OS_TEST</code><span class="cn">开短路</span><span class="bin-tag">Fail → Bin 2</span></div>
+        <div class="card-b"><span class="lbl">限值</span><span class="plim">IN / OUT / EN：−1.2 ~ −0.3 V</span></div>
+        <div class="card-b"><span class="lbl">资源</span><span class="rtag">PPMU FIMV 负向</span></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">1</div>
+      <div class="card">
+        <div class="card-h"><code>VOUT_TEST</code><span class="cn">输出电压（6 种输入/负载组合）</span><span class="bin-tag">Fail → Bin 3</span></div>
+        <div class="card-b"><span class="lbl">限值</span><span class="plim">全部 6 组：2.475 ~ 2.525 V（即 2.5 V ±1%）</span></div>
+        <div class="card-b"><span class="lbl">资源</span><span class="rtag">VIN = 2.7 / 4 / 5.5 V</span><span class="rtag">负载 10 mA / 400 mA</span><span class="rtag">高精度 BPMU 测 VOUT</span></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">2</div>
+      <div class="card">
+        <div class="card-h"><code>LNR_TEST</code><span class="cn">线性调整率</span><span class="bin-tag">Fail → Bin 4</span></div>
+        <div class="card-b"><span class="lbl">限值</span><span class="plim">Line_Regulation：−0.05 ~ 0.05 %/V</span></div>
+        <div class="card-b"><span class="lbl">资源</span><span class="rtag">DPS 扫 VIN</span></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">3</div>
+      <div class="card">
+        <div class="card-h"><code>VDO_TEST</code><span class="cn">压差（Dropout）</span><span class="bin-tag">Fail → Bin 5</span></div>
+        <div class="card-b"><span class="lbl">限值</span><span class="plim">Vdrop：0 ~ 200 mV</span></div>
+        <div class="card-b"><span class="lbl">资源</span><span class="rtag">VDO = 2.4 V − VOUT</span><span class="rtag">BPMU</span></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">4</div>
+      <div class="card">
+        <div class="card-h"><code>LDR_TEST</code><span class="cn">负载调整率（两种负载）</span><span class="bin-tag">Fail → Bin 6</span></div>
+        <div class="card-b"><span class="lbl">限值</span><span class="plim">LDR_1MA：0 ~ 0.06 %/mA</span><span class="plim">LDR10MA：0 ~ 0.1 %/mA</span></div>
+        <div class="card-b"><span class="lbl">资源</span><span class="rtag">CBIT 切换负载</span><span class="rtag">GND 脚 PPMU FV=0 V 测电流</span></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">5</div>
+      <div class="card">
+        <div class="card-h"><code>ICL_TEST</code><span class="cn">限流门限</span><span class="bin-tag">Fail → Bin 7</span></div>
+        <div class="card-b"><span class="lbl">限值</span><span class="plim">ICL：400 ~ 800 mA</span></div>
+        <div class="card-b"><span class="lbl">资源</span><span class="rtag">逐步加大负载至输出塌陷</span><span class="rtag">CBIT 选 6.25 Ω 重载</span></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">6</div>
+      <div class="card">
+        <div class="card-h"><code>IGND_TEST</code><span class="cn">静态地电流</span><span class="bin-tag">Fail → Bin 8</span></div>
+        <div class="card-b"><span class="lbl">限值</span><span class="plim">Ignd_10mA：−550 ~ 0 µA</span><span class="plim">Ignd_400mA：−1000 ~ 0 µA</span></div>
+        <div class="card-b"><span class="lbl">资源</span><span class="rtag">GND 脚独立测量单元</span></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">7</div>
+      <div class="card">
+        <div class="card-h"><code>PSRR_TEST</code><span class="cn">电源纹波抑制比（频变）</span><span class="bin-tag">Fail → Bin 9</span></div>
+        <div class="card-b"><span class="lbl">限值</span><span class="plim">PSRR_100HZ：38 ~ 70 dB</span><span class="plim">PSRR_10KHZ：10 ~ 45 dB</span></div>
+        <div class="card-b"><span class="lbl">资源</span><span class="rtag">AWG 叠加交流纹波到 VIN</span><span class="rtag">DGT 采集输出纹波</span></div>
+      </div>
+    </div>
+
+    <div class="step pass">
+      <div class="num">8</div>
+      <div class="card">
+        <div class="card-h"><code>SetPassBin</code><span class="cn">置合格档</span><span class="bin-tag">Bin 1 = Pass</span></div>
+        <div class="card-b">全部通过后置 Pass。</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="legend"><b>资源缩写：</b>
+    DPS = 器件电源 · PPMU = 每脚精密测量单元（挂在 DIO 上，1:1）· BPMU = 板载高精度测量单元 ·
+    AWG = 任意波形发生器 · DGT = 数字化采集 · DIO = 数字通道（跑 Pattern）· CBIT = 继电器控制位 · TMU = 时间/频率测量单元
+  </div>
+  <div class="legend"><b>模式缩写：</b>
+    FVMV = 施压测压 · FVMI = 施压测流 · FIMV = 施流测压 · FIMI = 施流测流
+  </div>
+  <div class="legend"><b>数据来源：</b>各案例 <code>*.tmf</code>（FuncList 顺序、Sbin/Hbin、ResultAnalysis 限值）与 <code>*.sig</code>（AFEType 通道统计）。限值为工程文件原值，未经修改。</div>
+</footer>
+
+</div>
+</body>
+</html>

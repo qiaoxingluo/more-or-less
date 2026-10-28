@@ -1,0 +1,4 @@
+Label,WFT,Sequence,LE,BI,LT,D,C,B,A,Ya,Yb,Yc,Yd,Ye,Yf,Yg,
+,WFT1,nop,0,1,1,0,0,0,0,H,H,H,H,H,H,L,
+,WFT1,nop,0,1,1,0,0,0,1,L,H,H,L,L,L,L,
+,WFT1,stop,0,1,1,0,0,1,0,H,H,L,H,H,L,H,

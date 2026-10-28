@@ -1,0 +1,16 @@
+SigName,AFEType,ChType,Site0_CH
+"VCC",DPS,Supply,1:1:0
+"A0",DIO,Inout,1:1:0
+"A1",DIO,Inout,1:1:1
+"A2",DIO,Inout,1:1:2
+"E1",DIO,Inout,1:1:3
+"E2",DIO,Inout,1:1:4
+"E3",DIO,Inout,1:1:5
+"Y0",DIO,Inout,1:1:6
+"Y1",DIO,Inout,1:1:7
+"Y2",DIO,Inout,1:1:8
+"Y3",DIO,Inout,1:1:9
+"Y4",DIO,Inout,1:1:10
+"Y5",DIO,Inout,1:1:11
+"Y6",DIO,Inout,1:1:12
+"Y7",DIO,Inout,1:1:13
