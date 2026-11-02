@@ -1,0 +1,21 @@
+{
+	"JOB":"2.0",
+	"jobDir":"D:\\MINI-ATE\\workspace\\SMU_AWG_Demo",
+	"jobFilePath":"D:\\MINI-ATE\\workspace\\SMU_AWG_Demo\\SMU_AWG_Demo.job",
+	"Name":"SMU_AWG_Demo",
+	"Date":"2026-11-02 16:30:00",
+	"ResDef":"SMU_AWG_Demo.res",
+	"SigMap":"SMU_AWG_Demo.sig",
+	"Pattern":"SMU_AWG_Demo.pat",
+	"Timing":"SMU_AWG_Demo.tim",
+	"TestProg":{
+		"Src":[],
+		"IncDir":[]
+	},
+	"Library":"Test.dll",
+	"Makefile":"Makefile",
+	"TMF":"SMU_AWG_Demo.tmf",
+	"AteHomePath":"d:\\MINI-ATE",
+	"SigGroup":"SMU_AWG_Demo.grp",
+	"lotId":"SMUAWG_L01"
+}

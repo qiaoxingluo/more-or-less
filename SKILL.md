@@ -1,6 +1,6 @@
 ---
 name: st2500-ate-test-skill
-description: 加速科技 ST2500/ST2516 ATE 平台的集成电路测试工程 skill。当用户讨论 ST2500、ST2516、加速科技测试机、ATE 测试工程、开短路 OS 测试、PPMU/BPMU/DPS 资源分配、Signal Map / Signal Group / Timing / TMF / Pattern 文件写法、引脚映射 SE-GIB100、或具体器件（CD4511、ADC0832、HK24C02、HK32F031F4P6、LM358P、TPS73625、74HC138）的测试流程时使用。核心内容包括 SMU 术语差异、PMU 五种模式、并行 OS 静态测量抓不到相邻脚短接的原理级盲区及双轮奇偶法修复方案、限值标定四步法、以及可直接编译的 HC138 工程模板。
+description: 加速科技 ST2500/ST2516 ATE 平台的集成电路测试工程 skill。当用户讨论 ST2500、ST2516、加速科技测试机、ATE 测试工程、开短路 OS 测试、PPMU/BPMU/DPS 资源分配、Signal Map / Signal Group / Timing / TMF / Pattern 文件写法、引脚映射 SE-GIB100、SMU 与 AWG 的使用方式、或具体器件（CD4511、ADC0832、HK24C02、HK32F031F4P6、LM358P、TPS73625、74HC138）的测试流程时使用。核心内容包括 SMU 术语差异、PMU 五种模式、并行 OS 静态测量抓不到相邻脚短接的原理级盲区及双轮奇偶法修复方案、限值标定四步法、SMU/AWG 测 DUT 的调用链与三步上机确认，以及可直接编译的 HC138、SMU/AWG 两套工程模板。
 agent_created: true
 ---
 
@@ -499,6 +499,7 @@ binObj.CheckResultAndBin(0, OSN_RESULT, 14);
 | 74HC138 / "HCE138" 澄清 | `references/06-74HC138速查.md` |
 | Limit 标定 / 单位换算 | `references/07-Limits标定与六条坑.md` |
 | 某类器件的完整流程怎么排 | `references/08-五款案例测试流程.md` |
+| SMU / AWG 怎么用来测 DUT | `references/09-SMU与AWG测试方案.md` |
 
 ---
 
@@ -516,5 +517,25 @@ python scripts/tmf_dump.py <目录或文件> -v     # 附带每项的 Min/Max/Un
 ### `templates/HC138_OS_V1/`
 
 可直接在 `D:/MINI-ATE/workspace/` 下 `make` 的完整工程骨架，见第 13.1 节。
+
+### `templates/SMU_AWG_Demo/`
+
+SMU + AWG 的完整调用链工程，载体为 74HC138，5 个测试项：
+
+| FN | 函数 | 仪器 | 测什么 |
+|---|---|---|---|
+| 0 | `IDD_SMU_T` | SMU | 5 V 供电下的静态电流 |
+| 1 | `IDD_SWEEP_SMU_T` | SMU | 2.0 / 3.3 / 5.0 / 5.5 V 四点扫描 |
+| 2 | `VCC_IV_SMU_T` | SMU | 0 → 6 V 扫 7 点画 I-V 曲线 |
+| 3 | `AWG_EN_ON_T` | AWG + DIO | AWG 输出 4.0 V 使能，验 Y0 = L |
+| 4 | `AWG_EN_OFF_T` | AWG + DIO | AWG 输出 0.5 V 禁能，验输出全 H |
+
+工程自带两个工具：`tools/gen_tmf.py`（生成 `.tmf` 并回读自校验）、`tools/check_project.py`（跨 `.sig/.grp/.tmf/Test.cpp` 一致性校验，15 项）。
+
+⚠️ 三条上机前必须确认的事（详见 `references/09` 第 8.1 节）：
+
+1. **SMU 无官方样例可对照** —— 五个官方案例里 `smu.` 的调用次数是 0，这部分只能照头文件签名写，必须用万用表交叉验证（串 10 kΩ 负载，读数应 ≈ 500 µA）。
+2. **AWG 输出直流是自创手法** —— 用 PULSE 占空比 99.9%（`pulseWidth = 1023/1024`）近似直流，**必须用示波器确认看到的是平台而不是方波**。
+3. **`Cali_SigDef.csv` / `Bist_SigDef.csv` 里没有 SMU 条目** —— 本机可能未装 SMU 板卡，先确认再上机，否则 SMU 三项跑不起来。
 
 

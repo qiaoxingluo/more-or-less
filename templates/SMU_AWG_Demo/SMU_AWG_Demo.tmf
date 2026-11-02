@@ -1,0 +1,191 @@
+﻿{
+	"ChangeDate": "Mon Nov 02 16:30:00 CST 2026",
+	"Version": "V1.0",
+	"ProjectInitName": "ProjectInit",
+	"ProjectResetName": "ProjectReset",
+	"ProjectReuseName": "ProjectReuse",
+	"SiteList": [
+		{
+			"SiteNumber": 0,
+			"SiteInitName": "site_init",
+			"SiteResetName": "site_reset",
+			"LoopCount": 1,
+			"ErrorSbin": 99,
+			"ErrorHbin": 99,
+			"BinLoopCount": 0,
+			"FuncList": [
+				{
+					"FuncNumber": 0,
+					"FuncName": "IDD_SMU_T",
+					"FuncDesc": "",
+					"LoopCount": 1,
+					"Sbin": 2,
+					"Hbin": 2,
+					"Results": "Fail",
+					"ResultAnalysis": [
+						{
+							"ParamName": "IDD",
+							"ParamNumber": 0,
+							"Min": "0",
+							"Max": "0.00005",
+							"Unit": "A"
+						}
+					]
+				},
+				{
+					"FuncNumber": 1,
+					"FuncName": "IDD_SWEEP_SMU_T",
+					"FuncDesc": "",
+					"LoopCount": 1,
+					"Sbin": 3,
+					"Hbin": 3,
+					"Results": "Fail",
+					"ResultAnalysis": [
+						{
+							"ParamName": "IDD_2V0",
+							"ParamNumber": 0,
+							"Min": "0",
+							"Max": "0.00005",
+							"Unit": "A"
+						},
+						{
+							"ParamName": "IDD_3V3",
+							"ParamNumber": 1,
+							"Min": "0",
+							"Max": "0.00005",
+							"Unit": "A"
+						},
+						{
+							"ParamName": "IDD_5V0",
+							"ParamNumber": 2,
+							"Min": "0",
+							"Max": "0.00005",
+							"Unit": "A"
+						},
+						{
+							"ParamName": "IDD_5V5",
+							"ParamNumber": 3,
+							"Min": "0",
+							"Max": "0.00005",
+							"Unit": "A"
+						}
+					]
+				},
+				{
+					"FuncNumber": 2,
+					"FuncName": "VCC_IV_SMU_T",
+					"FuncDesc": "",
+					"LoopCount": 1,
+					"Sbin": 4,
+					"Hbin": 4,
+					"Results": "Fail",
+					"ResultAnalysis": [
+						{
+							"ParamName": "I_VCC_0V",
+							"ParamNumber": 0,
+							"Min": "0",
+							"Max": "0.0001",
+							"Unit": "A"
+						},
+						{
+							"ParamName": "I_VCC_1V",
+							"ParamNumber": 1,
+							"Min": "0",
+							"Max": "0.0001",
+							"Unit": "A"
+						},
+						{
+							"ParamName": "I_VCC_2V",
+							"ParamNumber": 2,
+							"Min": "0",
+							"Max": "0.0001",
+							"Unit": "A"
+						},
+						{
+							"ParamName": "I_VCC_3V",
+							"ParamNumber": 3,
+							"Min": "0",
+							"Max": "0.0001",
+							"Unit": "A"
+						},
+						{
+							"ParamName": "I_VCC_4V",
+							"ParamNumber": 4,
+							"Min": "0",
+							"Max": "0.0001",
+							"Unit": "A"
+						},
+						{
+							"ParamName": "I_VCC_5V",
+							"ParamNumber": 5,
+							"Min": "0",
+							"Max": "0.0001",
+							"Unit": "A"
+						},
+						{
+							"ParamName": "I_VCC_6V",
+							"ParamNumber": 6,
+							"Min": "0",
+							"Max": "0.0001",
+							"Unit": "A"
+						}
+					]
+				},
+				{
+					"FuncNumber": 3,
+					"FuncName": "AWG_EN_ON_T",
+					"FuncDesc": "",
+					"LoopCount": 1,
+					"Sbin": 5,
+					"Hbin": 5,
+					"Results": "Fail",
+					"ResultAnalysis": [
+						{
+							"ParamName": "AWG_EN_ON",
+							"ParamNumber": 0,
+							"Min": "0",
+							"Max": "0",
+							"Unit": ""
+						}
+					]
+				},
+				{
+					"FuncNumber": 4,
+					"FuncName": "AWG_EN_OFF_T",
+					"FuncDesc": "",
+					"LoopCount": 1,
+					"Sbin": 6,
+					"Hbin": 6,
+					"Results": "Fail",
+					"ResultAnalysis": [
+						{
+							"ParamName": "AWG_EN_OFF",
+							"ParamNumber": 0,
+							"Min": "0",
+							"Max": "0",
+							"Unit": ""
+						}
+					]
+				},
+				{
+					"FuncNumber": 5,
+					"FuncName": "SetPassBin",
+					"FuncDesc": "",
+					"LoopCount": 1,
+					"Sbin": 1,
+					"Hbin": 1,
+					"Results": "Pass",
+					"ResultAnalysis": [
+						{
+							"ParamName": "Param",
+							"ParamNumber": 0,
+							"Min": "0",
+							"Max": "0",
+							"Unit": ""
+						}
+					]
+				}
+			]
+		}
+	]
+}

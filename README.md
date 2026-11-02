@@ -40,12 +40,14 @@
 │   ├── 05-SE-GIB100硬件映射.md       插槽针号 = 32 − CHn；GND=b7；AGND≠GND
 │   ├── 06-74HC138速查.md            引脚表 + 真值表 + "HCE138" 型号澄清
 │   ├── 07-Limits标定与六条坑.md       标定四步 + 六条工程坑 + 调试 Checklist
-│   └── 08-五款案例测试流程.md         ADC0832/HK24C02/HK32F031F4P6/LM358P/TPS73625
+│   ├── 08-五款案例测试流程.md         ADC0832/HK24C02/HK32F031F4P6/LM358P/TPS73625
+│   └── 09-SMU与AWG测试方案.md        SMU 供电/扫描/I-V + AWG 直流电平/交流激励
 ├── scripts/
 │   ├── tmf_dump.py                 ← 解析任意 .tmf，打印 FuncList / Limits
 │   └── check_garbled.py            ← 检查 markdown 里有没有退化/乱码文本
 ├── templates/
-│   └── HC138_OS_V1/                ← 可直接 make 的完整 ST2500 工程骨架
+│   ├── HC138_OS_V1/                ← 开短路（并行双向）工程骨架
+│   └── SMU_AWG_Demo/               ← SMU + AWG 调用链工程（含两个校验脚本）
 └── docs/                           ← 早期交付物（DAC0832 测试方案 / 五款案例流程图）
 ```
 
@@ -98,6 +100,8 @@ python scripts/tmf_dump.py <目录> -v     # 附带 Min/Max/Unit
 | 8 | **Test.cpp 没有 main()**；每个函数必须包 `TEST_BEGIN / TEST_ERROR / TEST_END` 并在结尾复位到 0 V 后 `DisConnect()`。 |
 | 9 | **不存在 "HCE138" 这个型号**，应为 74HC138。若为 **74LS138（TTL）**，则没有 VCC 侧二极管，**只能跑 OSN**。 |
 | 10 | **带上拉的引脚（I²C 的 SDA/SCL）做 OS 前必须用继电器断开**，否则读数被上拉电阻拖偏。 |
+| 11 | **三个类的断开方法拼写不同**：`smu.Disconnect()`（小写 c），`dps.DisConnect()` / `ppmu.DisConnect()`（大写 C）。 |
+| 12 | **AWG 的 amplitude 上限只有 4 V**，所以 5 V 系统做使能电平取 4.0 V（≥ 74HC 的 VIH ≈ 0.7×VCC = 3.5 V，够用）。 |
 
 ---
 
